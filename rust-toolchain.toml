@@ -1,0 +1,4 @@
+[toolchain]
+# The pinned embassy commit requires Rust 1.97 or newer.
+channel = "1.97"
+targets = ["thumbv6m-none-eabi"]

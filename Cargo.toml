@@ -1,0 +1,33 @@
+[workspace]
+resolver = "3"
+members = ["midi-link", "host", "device"]
+
+# Every embassy crate is pinned to the same commit. The USB host stack
+# (embassy-usb-host, embassy-rp::usb::host) is not on crates.io yet, and the
+# MIDI host class was merged on 2026-09-27, so a git pin is required.
+[workspace.dependencies]
+embassy-executor   = { git = "https://github.com/embassy-rs/embassy", rev = "b6bf1c8e7050b8fb0f295b92ebbef537e425cce0" }  # executor comes from embassy-rp (executor-thread)
+embassy-rp         = { git = "https://github.com/embassy-rs/embassy", rev = "b6bf1c8e7050b8fb0f295b92ebbef537e425cce0", features = ["rp2040", "time-driver", "critical-section-impl", "executor-thread"] }
+embassy-time       = { git = "https://github.com/embassy-rs/embassy", rev = "b6bf1c8e7050b8fb0f295b92ebbef537e425cce0" }
+embassy-sync       = { git = "https://github.com/embassy-rs/embassy", rev = "b6bf1c8e7050b8fb0f295b92ebbef537e425cce0" }
+embassy-futures    = { git = "https://github.com/embassy-rs/embassy", rev = "b6bf1c8e7050b8fb0f295b92ebbef537e425cce0" }
+embassy-usb        = { git = "https://github.com/embassy-rs/embassy", rev = "b6bf1c8e7050b8fb0f295b92ebbef537e425cce0" }
+embassy-usb-host   = { git = "https://github.com/embassy-rs/embassy", rev = "b6bf1c8e7050b8fb0f295b92ebbef537e425cce0" }
+embassy-usb-driver = { git = "https://github.com/embassy-rs/embassy", rev = "b6bf1c8e7050b8fb0f295b92ebbef537e425cce0" }
+cortex-m           = { version = "0.7.6", features = ["inline-asm"] }
+cortex-m-rt        = "0.7.0"
+embedded-io-async  = "0.7.0"
+static_cell        = "2.1"
+panic-reset        = "0.1.1"
+midi-link          = { path = "midi-link" }
+# RP2040 (Cortex-M0+) has no atomic CAS; static_cell needs it emulated.
+portable-atomic    = { version = "1.5", features = ["critical-section"] }
+
+[profile.release]
+debug = 2
+lto = "fat"
+opt-level = "s"
+codegen-units = 1
+
+[profile.dev]
+opt-level = "s"

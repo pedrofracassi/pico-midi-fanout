@@ -1,0 +1,7 @@
+[build]
+target = "thumbv6m-none-eabi"   # RP2040 (Cortex-M0+)
+
+[target.thumbv6m-none-eabi]
+# `cargo run --release -p host` converts to UF2 and copies it to a Pico held in BOOTSEL.
+# Install with: cargo install elf2uf2-rs   (or swap for: probe-rs run --chip RP2040)
+runner = "elf2uf2-rs -d"
